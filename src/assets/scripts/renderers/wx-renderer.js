@@ -80,6 +80,7 @@ var WxRenderer = function (opts) {
   
     styleMapping = this.buildTheme(this.opts.theme)
     var renderer = new marked.Renderer()
+    
     FuriganaMD.register(renderer);
   
     renderer.heading = function (text, level) {
@@ -95,6 +96,7 @@ var WxRenderer = function (opts) {
     renderer.blockquote = function (text) {
       return '<blockquote ' + S('blockquote') + '>' + text + '</blockquote>'
     }
+    
     renderer.code = function (text, infostring) {
       text = text.replace(/</g, "&lt;")
       text = text.replace(/>/g, "&gt;")
@@ -104,7 +106,7 @@ var WxRenderer = function (opts) {
       var numbers = []
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i]
-        codeLines.push('<code><span class="code-snippet_outer">' + (line || '<br>') + '</span></code>')
+        codeLines.push('<code><span class="code-snippet_outer">' + (hljs.highlight(line, {language: infostring || 'c', ignoreIllegals: true}).value || '<br>') + '</span></code>')
         numbers.push('<li></li>')
       }
       var lang = infostring || ''
